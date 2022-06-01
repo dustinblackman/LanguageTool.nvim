@@ -15,6 +15,7 @@
 " This function starts the server
 function LanguageTool#server#start(server_command) "{{{1
     let s:languagetool_port = get(g:, 'languagetool_port', 8081)
+    let s:languagetool_endpoint = get(g:, 'languagetool_endpoint', 'http://localhost:' . s:languagetool_port . '/v2/')
 
     " Start the server
     let s:languagetool_job = jobstart(a:server_command . ' --port '
@@ -60,7 +61,7 @@ function! LanguageTool#server#send(method, endpoint, data, callback) "{{{1
                 \ . ' --header "Content-Type: application/x-www-form-urlencoded"'
                 \ . ' --header "Accept: application/json"'
                 \ . a:data
-                \ . ' http://localhost:' . s:languagetool_port . '/v2/' . a:endpoint
+                \ . ' '. s:languagetool_endpoint . a:endpoint
 
     " Let json magic happen
     if s:lt_server_started
@@ -93,7 +94,7 @@ function! LanguageTool#server#send_sync(method, endpoint, data) "{{{1
                 \ . ' --header "Content-Type: application/x-www-form-urlencoded"'
                 \ . ' --header "Accept: application/json"'
                 \ . a:data
-                \ . ' http://localhost:' . s:languagetool_port . '/v2/' . a:endpoint
+                \ . ' '. s:languagetool_endpoint . a:endpoint
                 \ . ' 2> ' . l:tmperror
 
     " Let json magic happen
